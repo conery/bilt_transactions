@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "bilt_transactions"
+version = "0.1.0"
+description = "Parse an MHTML file exported from Bilt.com, save transactions in CSV format."
+authors = ["John Conery"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
