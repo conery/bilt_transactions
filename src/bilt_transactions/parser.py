@@ -15,5 +15,5 @@ def extract_paragraphs(fn: str):
     '''
     converter = MHTMLConverter()
     html = converter.convert_file(fn)
-    return [re.findall(r'<p class.*?</p>', html)]
+    return re.findall(r'<p class.*?</p>', html)
 
