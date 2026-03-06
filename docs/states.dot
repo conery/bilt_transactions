@@ -1,0 +1,16 @@
+digraph { 
+    rankdir = "LR";
+    node [shape = doublecircle]; A,N;
+    node [shape = circle];
+    edge [fontsize = 10];
+    edge [fontcolor = "blue"];
+    A -> D [label = "  date   "];
+    D -> X [label = " desc    "];
+    X -> N [label = " amt"];
+    N -> D [label = " date"];
+    N -> X [label = "  desc"];
+    // A -> A [label = "  ¬ date"; color="red"];
+    // D -> A [label = "¬ desc"; color= "red"];
+    // X -> A [label = "   ¬ amt"; color= "red"];
+    // N -> A [label = "   amt"; color= "red"];
+}
