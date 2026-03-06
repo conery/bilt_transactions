@@ -1,21 +1,24 @@
-[tool.poetry]
+[build-system]
+requires = [ "hatchling"]
+build-backend = "hatchling.build"
+
+[project]
 name = "bilt_transactions"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Parse an MHTML file exported from Bilt.com, save transactions in CSV format."
-authors = ["John Conery"]
+authors = [{ name = "John Conery", email = "jconery@icloud.com"}]
 license = "MIT"
 readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.13"
-unmhtml = "^0.2.0"
-
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
-
-[dependency-groups]
-dev = [
-    "pytest (>=9.0.2,<10.0.0)"
+requires-python = ">=3.13.1"
+dependencies = [
+    "pytest (>=9.0.2,<10.0.0)",
+    "setuptools>=82.0.0",
+    "unmhtml>=0.2.0",
 ]
+
+[project.scripts]
+bilt_transactions = "bilt_transactions.main:main"
+
+[tool.hatch.version]
+path = "src/bilt_transactions/__about__.py"
+
