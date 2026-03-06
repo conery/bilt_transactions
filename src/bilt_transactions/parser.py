@@ -3,6 +3,7 @@
 # transactions in CSV format
 #
 
+import logging
 import re
 from unmhtml import MHTMLConverter
 
@@ -57,6 +58,9 @@ def parse_file(fn: str):
                 if token.kind == 'amount':
                     consume(token, 'X -> N')
                     next = 'N'
+                elif token.kind == 'description':
+                    consume(token, 'X -> X')
+                    next = 'X'
                 else:
                     missing_edge(token, 'X')
                     next = 'A'
@@ -71,14 +75,17 @@ def parse_file(fn: str):
                 else:
                     missing_edge(token, 'N')
                     next = 'A'
+            case _:
+                logging.error(f'internal error: undefined state: {state}')
+                exit(1)
         return next
     
     def consume(token, msg):
         transaction[token.kind] = token.value
-        print(f'{msg}: {token.kind} = {token.value}')
+        logging.debug(f'{msg}: {token.kind} = {token.value}')
 
     def missing_edge(token, state):
-        printf('error: state {state} has no action for {token.kind}')
+        logging.error(f'state {state} has no action for {token.kind} {token.value}')
     
     def clear_transaction():
         for k in transaction.keys():
@@ -100,9 +107,10 @@ def parse_file(fn: str):
     while paragraphs:
         p = paragraphs.pop(0)
         if t := Token(p):
+            logging.debug(f'kind {t.kind} value {t.value}')
             state = step(t, state)
         else:
-            print(f'error making token for {p}')
+            logging.error(f'error making token for {p}')
     
     save_transaction()
     return output
