@@ -11,17 +11,19 @@ This repo has a simple command line application that will extract transactions f
 
 Users must be familiar with running command line applications.  Installing the script is simple if a Python environment is set up.  For most people that is probably the case, but ideally users will know how to create a new Python environment for this script.
 
-The test data is very skimpy -- one month's worth of transactions from one user.  If you run into any problems create a new issue.
+The test data is very skimpy -- one month's worth of transactions from one user.  If you run into any problems with your own data and would like to help us improve the program see the section on **Debugging** below.
+
+The output file is extremely simple, with only three columns for each transaction:  **date**, **payee**, and **amount**.  That's all there is on the web page, and that's all you will get in the CSV file.
 
 ## Installation
 
-The easiest way to install the script is to tell PIP to get it from GitHub:
+The easiest way to install the script is to tell PIP to get it from GitHub.  Open a terminal window and type this command:
 
 ```bash
 $ pip install git+https://github.com/conery/bilt_transactions.git
 ```
 
-Alternatively, download or clone the repo, cd to the project folder, and install it locally:
+An alternative (if you want to look at the code) is to download or clone the repo, `cd` to the project folder, and install it locally:
 
 ```bash
 $ pip install .
@@ -31,7 +33,7 @@ $ pip install .
 
 As mentioned above, creating a CSV file with `bilt_transactions` is a two-step process.
 
-### Download Transactions 
+### 1.  Download Transactions 
 
 To download a file with Bilt Card transactions you need a browser that saves pages in [MHTML](https://en.wikipedia.org/wiki/MHTML) format.  Chrome (and Arc, which is built with Chrome) supports this format, Safari does not. 
 
@@ -45,7 +47,7 @@ The browser will pop up a dialog to ask you where you want to save the file.  Gi
 
 Most importantly, tell the browser you want an MHTML file.  In Chrome, at the bottom of the dialog, where you see the Format options, choose **Webpage, Single File.** 
 
-### Parse the MHTML File
+### 2.  Parse the MHTML File
 
 To run `bilt_transactions` simply type the script name followed by the path to the MHTML file you want to process.  The script will print a CSV header line and then the CSV records for all the transactions it finds.  Here is an example, using the test data packaged with the script:
 
@@ -62,6 +64,44 @@ To save the transactions in a CSV file simply redirect the output, _e.g._
 ```
 $ bilt_transactions tests/demo.mhtml > demo.csv
 ```
+
+### Debugging
+
+Two kinds of errors might pop up when you run the script on your own data:
+
+- missing transactions -- a transaction that is displayed in your browser is not showing up in your CSV file
+
+- garbled data -- text is appearing in the wrong column, for example you see a payee description in the amount column
+
+What this probably means is the parser lost track of where it was in the file.  The parsing algorithms is based on a simple state machine that transitions between states as it finds each paragraph.  
+
+If you include `--tokens` as part of the command the script will print all the paragraphs it finds in the file:
+
+```shell
+$ bilt_transactions --tokens tests/demo.mhtml
+<p class="sc-iOyoOp hjBxMK">February 9, 2026</p>
+<p class="sc-iOyoOp gSHtoa sc-hwpaKV gvdukv">Best Buy</p>
+<p class="sc-iOyoOp gSHtoa">$39.99</p>
+<p class="sc-iOyoOp hjBxMK">February 8, 2026</p>
+<p class="sc-iOyoOp gSHtoa sc-hwpaKV gvdukv">Bill &amp; Tim's Barbecue</p>
+<p class="sc-iOyoOp gSHtoa">$28.26</p>
+<p class="sc-iOyoOp gSHtoa sc-hwpaKV gvdukv">Art House</p>
+<p class="sc-iOyoOp gSHtoa">$13.20</p>
+```
+
+If you are not a Python programmer but would like to help us improve the script:
+
+1. run the script with the `--tokens` option and save the output in a file (it will be a plain text file, you can name it anything you want, but the convention is to use `.txt` as the extension)
+
+2. **edit the file** -- to keep your data private, you can edit the payees and amounts, but please leave the dates as they are, if possible
+
+3. open a new issue (click on Issues at the top of this page); include your file and describe the output you were expecting
+
+
+Of course, if you are a Python programmer and want to dig in to the code, feel free, and send us a pull request with your suggested improvements.
+
+> Documentation will be included in a future release.
+>
 
 ## Contributing
 
