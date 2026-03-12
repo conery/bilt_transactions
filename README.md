@@ -1,6 +1,12 @@
 # bilt_transactions
 
-The web site for the Bilt 2.0 credit card has a wallet section where cardholders can view transactions and a section in the card management page to download statements in PDF format, but there is currently no way to export transactions in CSV format so they can be imported into a spreadsheet or financial management software.
+The web site for the Bilt 2.0 credit card has a wallet section where cardholders can view transactions and a section in the card management page to download statements in PDF format, ~~but there is currently no way to export transactions in CSV format so they can be imported into a spreadsheet or financial management software.~~
+
+#### Update (Mar 10)
+
+Bilt now allows users to export data to a CSV.  I'll leave this repo here for a while, maybe it will be useful again in the future?
+
+#### Synopsis
 
 This repo has a simple command line application that will extract transactions from a web page and format them as CSV records.  Extracting transactions is a two-step process:
 
